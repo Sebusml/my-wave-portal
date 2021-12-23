@@ -18,7 +18,13 @@ const main = async () => {
     console.log("By: ", owner.address);
     
     let waveCont = await waveContract.getTotalWaves();
+    
     let waveTxn = await waveContract.wave();
+    await waveTxn.wait();
+    
+    waveCont = await waveContract.getTotalWaves();
+
+    waveTxn = await waveContract.connect(randomPerson).wave();
     await waveTxn.wait();
 
     waveCont = await waveContract.getTotalWaves();
