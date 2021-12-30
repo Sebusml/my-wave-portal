@@ -17,17 +17,22 @@ const main = async () => {
     console.log("Contract deployed to : ", waveContract.address);
     console.log("By: ", owner.address);
     
-    let waveCont = await waveContract.getTotalWaves();
-    
-    let waveTxn = await waveContract.wave();
+    // Get initial state
+    let waveCount = await waveContract.getTotalWaves(); // Contract calls the log functions
+    let allWaves = await waveContract.getAllWaves();
+    console.log("AllWaves \n", allWaves);
+
+    // Send some waves
+    let waveTxn = await waveContract.wave("First message :)!");
+    await waveTxn.wait();
+
+    waveTxn = await waveContract.connect(randomPerson).wave("Random person wave!");
     await waveTxn.wait();
     
-    waveCont = await waveContract.getTotalWaves();
-
-    waveTxn = await waveContract.connect(randomPerson).wave();
-    await waveTxn.wait();
-
-    waveCont = await waveContract.getTotalWaves();
+    // Get new state
+    waveCount = await waveContract.getTotalWaves();
+    allWaves = await waveContract.getAllWaves();
+    console.log("AllWaves \n", allWaves);
 }
 
 const runMain = async () => {
